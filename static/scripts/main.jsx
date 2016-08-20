@@ -12,7 +12,7 @@ var Repo = React.createClass({
 var ReposList = React.createClass({
   render: function() {
     var list = [];
-    var lastCategory = null;
+
     this.props.repos.forEach(function(repo) {
       list.push(<Repo repo={repo} key={repo.id} />);
     });
@@ -21,18 +21,42 @@ var ReposList = React.createClass({
 });
 
 var FilterBy = React.createClass({
+
+  getInitialState: function() {
+    return {
+      selectedOption: 0
+    }
+  },
+
+  handleChange: function (e) {
+    var newSelectedOption = e.target.value
+    this.setState({ selectedOption: newSelectedOption });
+    this.props.onFilterSelected(newSelectedOption);
+  },
+
   render: function() {
+    var options = [];
+
+    this.props.filterByList.forEach(function(filter) {
+      options.push(
+        <option value={filter.id} key={filter.id}>
+          {filter.namespace}
+        </option>
+      );
+    });
     return (
-      <form>
-        <input type="text" placeholder="Search..." />
-      </form>
+      <select value={this.state.selectedOption} onChange={this.handleChange}>
+        <option value="0">All</option>
+        {options}
+      </select>
     );
   }
 });
 
 var FilterableReposList = React.createClass({
+
   loadReposFromGit: function() {
-    fetch('https://api.github.com/repositories?since=364', {
+    return fetch('https://api.github.com/repositories?since=364', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -40,26 +64,56 @@ var FilterableReposList = React.createClass({
       }})
       .then(function(res) {
         return res.json();
-       })
-      .then(function(repos) {
-        return this.setState({ repos: repos });
-       }.bind(this));
+      });
+  },
+
+  setSelectedFilter: function(filterId) {
+    var newFilteredRepos;
+
+    if (filterId == 0) {
+      this.setState({ filteredRepos: this.state.originalReposSet });
+    } else {
+      newFilteredRepos = this.state.originalReposSet.filter(function(repo) {
+        return repo.owner.id == filterId;
+      });
+      this.setState({ filteredRepos: newFilteredRepos });
+    }
   },
 
   getInitialState: function() {
-    return {data: []};
+    return ({ originalReposSet: [], filteredRepos: [], filterByList: [] });
   },
 
   componentDidMount: function() {
-    this.loadReposFromGit();
+    this.loadReposFromGit().then(function(repos) {
+      var unique = [], filterByList = [];
+      repos.forEach(function(repo) {
+        if (!unique.includes(repo.owner.id)) {
+          unique.push(repo.owner.id);
+          filterByList.push({
+            id: repo.owner.id,
+            namespace: repo.owner.login,
+            avatar: repo.owner.avatar_url
+          });
+        }
+
+      });
+      return this.setState({
+        originalReposSet: repos,
+        filteredRepos: repos,
+        filterByList: filterByList
+      });
+    }.bind(this));
   },
 
   render: function() {
-    if (this.state.repos) {
+    if (this.state.filteredRepos) {
       return (
         <div>
-          <FilterBy />
-          <ReposList repos={this.state.repos} />
+          <FilterBy
+            filterByList={this.state.filterByList}
+            onFilterSelected={this.setSelectedFilter} />
+          <ReposList repos={this.state.filteredRepos} />
         </div>
       );
     } else {
