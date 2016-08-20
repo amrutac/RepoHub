@@ -1,0 +1,14 @@
+{
+  "name": "repo-hub",
+  "version": "1.0.0",
+  "description": "Repo hub shows a list of repos",
+  "main": "server.js",
+  "author": "Amruta Chitnis",
+  "dependencies": {
+    "body-parser": "1.15.0",
+    "connect-timeout": "1.7.0",
+    "express": "4.13.4",
+    "path": "0.12.7",
+    "request": "2.69.0"
+  }
+}

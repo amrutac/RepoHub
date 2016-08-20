@@ -1,0 +1,24 @@
+$primaryFontColor: #555;
+$headerColor: #333;
+$contrastColor: #e81c4f;
+
+body {
+  color: $primaryFontColor;
+  font-family: 'Open Sans', sans-serif;
+}
+
+a {
+  color: $contrastColor;
+}
+
+h2 {
+  color: $headerColor;
+}
+
+.utils-fixed-width {
+  max-width: 900px;
+}
+
+.utils-centered {
+  margin: 0 auto;
+}

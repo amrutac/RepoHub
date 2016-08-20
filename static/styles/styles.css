@@ -1,0 +1,25 @@
+/* line 5, scss/styles.scss */
+body {
+  color: #555;
+  font-family: 'Open Sans', sans-serif;
+}
+
+/* line 10, scss/styles.scss */
+a {
+  color: #e81c4f;
+}
+
+/* line 14, scss/styles.scss */
+h2 {
+  color: #333;
+}
+
+/* line 18, scss/styles.scss */
+.utils-fixed-width {
+  max-width: 900px;
+}
+
+/* line 22, scss/styles.scss */
+.utils-centered {
+  margin: 0 auto;
+}
