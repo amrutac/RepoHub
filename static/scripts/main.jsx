@@ -53,10 +53,22 @@ var FilterBy = React.createClass({
   }
 });
 
+var Pagination = React.createClass({
+
+  render: function() {
+    console.log(this.props.pages)
+    return (<ul>
+      {this.props.pages.map(function(page){
+        return <li key={page}><a>{page}</a></li>;
+      })}
+    </ul>)
+  }
+});
+
 var FilterableReposList = React.createClass({
 
   loadReposFromGit: function() {
-    return fetch('https://api.github.com/repositories?since=364', {
+    return fetch('https://api.github.com/repositories?since=66&per_page=9', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -67,26 +79,45 @@ var FilterableReposList = React.createClass({
       });
   },
 
+  setPages: function(reposLen, pageSize) {
+    var pages = ['<'], total, i = 0;
+    total = Math.floor(reposLen/pageSize);
+    while (i++ < total) {
+      pages.push(i);
+    }
+    pages.push('>');
+    return pages;
+  },
+
   setSelectedFilter: function(filterId) {
-    var newFilteredRepos;
+    var newFilteredRepos, pages, originalSet = this.state.originalReposSet;
 
     if (filterId == 0) {
-      this.setState({ filteredRepos: this.state.originalReposSet });
+      pages = this.setPages(originalSet.length, this.state.pageSize);
+      this.setState({ filteredRepos: originalSet, pages: pages });
     } else {
-      newFilteredRepos = this.state.originalReposSet.filter(function(repo) {
+      newFilteredRepos = originalSet.filter(function(repo) {
         return repo.owner.id == filterId;
       });
+      pages = this.setPages(newFilteredRepos.length, this.state.pageSize);
       this.setState({ filteredRepos: newFilteredRepos });
     }
   },
 
   getInitialState: function() {
-    return ({ originalReposSet: [], filteredRepos: [], filterByList: [] });
+    return ({
+      originalReposSet: [],
+      filteredRepos: [],
+      filterByList: [],
+      pages: [],
+      pageSize: 10
+    });
   },
 
   componentDidMount: function() {
     this.loadReposFromGit().then(function(repos) {
-      var unique = [], filterByList = [];
+      var unique = [], filterByList = [], pages;
+
       repos.forEach(function(repo) {
         if (!unique.includes(repo.owner.id)) {
           unique.push(repo.owner.id);
@@ -96,12 +127,15 @@ var FilterableReposList = React.createClass({
             avatar: repo.owner.avatar_url
           });
         }
-
       });
+
+      pages = this.setPages(repos.length, this.state.pageSize);
+
       return this.setState({
         originalReposSet: repos,
         filteredRepos: repos,
-        filterByList: filterByList
+        filterByList: filterByList,
+        pages: pages
       });
     }.bind(this));
   },
@@ -114,6 +148,7 @@ var FilterableReposList = React.createClass({
             filterByList={this.state.filterByList}
             onFilterSelected={this.setSelectedFilter} />
           <ReposList repos={this.state.filteredRepos} />
+          <Pagination pages={this.state.pages} />
         </div>
       );
     } else {
