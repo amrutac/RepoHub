@@ -5,10 +5,6 @@
   "main": "server.js",
   "author": "Amruta Chitnis",
   "dependencies": {
-    "body-parser": "1.15.0",
-    "connect-timeout": "1.7.0",
-    "express": "4.13.4",
-    "path": "0.12.7",
-    "request": "2.69.0"
+    "json-server": "^0.8.18"
   }
 }

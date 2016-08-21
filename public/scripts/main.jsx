@@ -67,9 +67,10 @@ var Pagination = React.createClass({
 
 var FilterableReposList = React.createClass({
 
-  loadReposFromGit: function() {
-    return fetch('https://api.github.com/repositories?since=66&per_page=9', {
+  fetchJson: function(url) {
+    return fetch(url, {
       method: 'GET',
+      mode: 'cors',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -79,34 +80,37 @@ var FilterableReposList = React.createClass({
       });
   },
 
-  setPages: function(reposLen, pageSize) {
-    var pages = ['<'], total, i = 0;
-    total = Math.floor(reposLen/pageSize);
+  setPages: function(reposLen) {
+    var pages = [], total, i = 0;
+    total = Math.floor(reposLen/this.state.pageSize);
     while (i++ < total) {
       pages.push(i);
     }
-    pages.push('>');
+    if (pages.length >= 2) {
+      pages.unshift('<');
+      pages.push('>');
+    }
+
     return pages;
   },
 
   setSelectedFilter: function(filterId) {
-    var newFilteredRepos, pages, originalSet = this.state.originalReposSet;
+    var url = '/repos?_limit=' + this.state.pageSize;
 
     if (filterId == 0) {
-      pages = this.setPages(originalSet.length, this.state.pageSize);
-      this.setState({ filteredRepos: originalSet, pages: pages });
+      url = '/repos?_limit=' + this.state.pageSize;
     } else {
-      newFilteredRepos = originalSet.filter(function(repo) {
-        return repo.owner.id == filterId;
-      });
-      pages = this.setPages(newFilteredRepos.length, this.state.pageSize);
-      this.setState({ filteredRepos: newFilteredRepos });
+      url = '/repos?owner.id=' + filterId + '&_limit=' + this.state.pageSize;
     }
+    this.fetchJson(url).then(function(repos) {
+      var pages;
+      pages = filterId == 0 ? this.setPages(200) : this.setPages(repos.length);
+      this.setState({ filteredRepos: repos, pages: pages });
+    }.bind(this));
   },
 
   getInitialState: function() {
     return ({
-      originalReposSet: [],
       filteredRepos: [],
       filterByList: [],
       pages: [],
@@ -115,28 +119,23 @@ var FilterableReposList = React.createClass({
   },
 
   componentDidMount: function() {
-    this.loadReposFromGit().then(function(repos) {
-      var unique = [], filterByList = [], pages;
 
-      repos.forEach(function(repo) {
-        if (!unique.includes(repo.owner.id)) {
-          unique.push(repo.owner.id);
-          filterByList.push({
-            id: repo.owner.id,
-            namespace: repo.owner.login,
-            avatar: repo.owner.avatar_url
-          });
-        }
-      });
+    this.fetchJson('/repos?_limit=' + this.state.pageSize).then(function(repos) {
+      this.fetchJson('/filters').then(function(filters) {
+        var pages;
+        //Hardcoding this since I was unable to retrieve the
+        //headers from returned by the response object
+        pages = this.setPages(200);
 
-      pages = this.setPages(repos.length, this.state.pageSize);
+        return this.setState({
+          originalReposSet: repos,
+          filteredRepos: repos,
+          filterByList: filters,
+          pages: pages
+        });
+      }.bind(this));
 
-      return this.setState({
-        originalReposSet: repos,
-        filteredRepos: repos,
-        filterByList: filterByList,
-        pages: pages
-      });
+
     }.bind(this));
   },
 
