@@ -3,10 +3,14 @@ var Repo = React.createClass({
   render: function() {
     return (
       <div className="repo">
-        <h3 className="repo-title">{this.props.repo.full_name}</h3>
-        { this.props.repo.private ? <span className="repo-private">PRIVATE</span> :
-          <span className="repo-private">PUBLIC</span> }
-        <div className="repo-description">{this.props.repo.description}</div>
+        <div className="repo-title utils-repo-width">
+          <span className="repo-login">{this.props.repo.owner.login}</span>
+          <span>&#47;</span>
+          <span className="repo-name"><strong>{this.props.repo.name}</strong></span>
+          {this.props.repo.private ? <span className="repo-type">Private</span> :
+            <span className="repo-type">Public</span> }
+        </div>
+        <div className="repo-description utils-repo-width">{this.props.repo.description}</div>
       </div>);
   }
 });
@@ -89,8 +93,8 @@ var Paginator = React.createClass({
     return (<ul className="paginator">
       {this.props.pages.map(function(page) {
         return (
-          <li key={page} className={this.isActive(page)}>
-            <a onClick={this.handleClick} data-page-number={page}>{page}</a>
+          <li key={page} className={this.isActive(page)} onClick={this.handleClick} data-page-number={page}>
+            {page}
           </li>
         );
       }.bind(this))}
@@ -208,7 +212,7 @@ var FilterableReposList = React.createClass({
   render: function() {
     if (this.state.filteredRepos) {
       return (
-        <div>
+        <div className="repos-list-wrapper">
           <FilterBy
             filterByList={this.state.filterByList}
             onFilterSelection={this.onFilterSelection} />

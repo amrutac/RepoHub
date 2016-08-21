@@ -1,32 +1,85 @@
-/* line 5, scss/styles.scss */
+/* line 10, scss/styles.scss */
 body {
   color: #555;
   font-family: 'Open Sans', sans-serif;
 }
 
-/* line 11, scss/styles.scss */
+/* line 15, scss/styles.scss */
 h2 {
   color: #333;
 }
 
-/* line 15, scss/styles.scss */
-.utils-fixed-width {
-  max-width: 900px;
-}
-
 /* line 19, scss/styles.scss */
-.utils-centered {
-  margin: 0 auto;
+.utils-repo-width {
+  width: 40%;
 }
 
 /* line 23, scss/styles.scss */
+.repos-list-wrapper {
+  padding: 0 40px;
+}
+
+/* line 27, scss/styles.scss */
+.repo {
+  border-bottom: 1px solid #f1f1f1;
+  padding: 10px 0;
+}
+
+/* line 32, scss/styles.scss */
+.repo-title {
+  padding-bottom: 10px;
+}
+
+/* line 36, scss/styles.scss */
+.repo-login {
+  padding-right: 5px;
+}
+
+/* line 40, scss/styles.scss */
+.repo-name {
+  padding-left: 5px;
+}
+
+/* line 44, scss/styles.scss */
+.repo-description {
+  color: #bbb;
+  font-size: 14px;
+}
+
+/* line 49, scss/styles.scss */
+.repo-type {
+  color: #ffae19;
+  font-size: 12px;
+  text-transform: lowercase;
+  border: 1px solid #ffa500;
+  padding: 2px 7px;
+  margin-left: 20px;
+}
+
+/* line 58, scss/styles.scss */
 .paginator {
   display: flex;
   list-style: none;
 }
 
-/* line 28, scss/styles.scss */
+/* line 63, scss/styles.scss */
 .paginator-item {
   cursor: pointer;
-  padding: 10px;
+  padding: 5px 11px;
+  margin: 2px;
+}
+
+/* line 70, scss/styles.scss */
+.default {
+  border: 1px solid #e5e5e5;
+  background-color: #e5e5e5;
+  border-radius: 3px;
+}
+
+/* line 76, scss/styles.scss */
+.active {
+  border: 1px solid #0EBFE9;
+  background-color: #0EBFE9;
+  border-radius: 3px;
+  color: #fff;
 }
