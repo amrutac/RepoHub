@@ -4,7 +4,8 @@ var Repo = React.createClass({
     return (
       <div className="repo">
         <h3 className="repo-title">{this.props.repo.full_name}</h3>
-        { this.props.repo.private ? <span className="repo-private">PRIVATE</span> : '' }
+        { this.props.repo.private ? <span className="repo-private">PRIVATE</span> :
+          <span className="repo-private">PUBLIC</span> }
         <div className="repo-description">{this.props.repo.description}</div>
       </div>);
   }
@@ -64,9 +65,20 @@ var Paginator = React.createClass({
   },
 
   handleClick: function (e) {
-    var newSelectedPage = e.target.dataset.pageNumber;
-    this.setState({ selectedPage: newSelectedPage });
-    this.props.onPageSelection(newSelectedPage);
+    var oldValue, newValue, totalPages;
+
+    oldValue = this.state.selectedPage;
+    newValue = e.target.dataset.pageNumber;
+    totalPages = this.props.pages.length - 2;
+
+    if (newValue === '<') {
+      newValue = oldValue === 1 ? oldValue - 1 : 1;
+    } else if (newValue === '>') {
+      newValue = oldValue < totalPages ?
+        oldValue + 1 : totalPages;
+    }
+    this.setState({ selectedPage: parseInt(newValue, 10) });
+    this.props.onPageSelection(newValue);
   },
 
   isActive:function(page){
@@ -104,7 +116,6 @@ var FilterableReposList = React.createClass({
   setPages: function(reposLen) {
     var pages = [], total, i = 0;
 
-
     total = Math.floor(reposLen/this.state.pageSize);
 
     if (reposLen % 10) {
@@ -122,7 +133,7 @@ var FilterableReposList = React.createClass({
   },
 
   onFilterSelection: function(filterId) {
-    var url = '/repos?_limit=' + this.state.pageSize,
+    var url = '/repos?_sort=name&_limit=' + this.state.pageSize,
       id = parseInt(filterId, 10);
 
     this.setState({ filterApplied: id });
@@ -135,14 +146,14 @@ var FilterableReposList = React.createClass({
     this.fetchJson(url).then(function(repos) {
       var pages;
       pages = id ? this.setPages(repos.length) :
-        this.setPages(this.state.totalPages);
+        this.setPages(this.state.totalRepos);
       this.setState({ filteredRepos: repos.slice(0, 10), pages: pages });
     }.bind(this));
   },
 
   onPageSelection: function(page) {
     var from, to,
-      url = '/repos?_limit=' + this.state.pageSize;
+      url = '/repos?_sort=name&_limit=' + this.state.pageSize;
 
     to = page * 10;
     from = (to - 10);
@@ -164,19 +175,24 @@ var FilterableReposList = React.createClass({
       filterByList: [],
       pages: [],
       filterApplied: 0,
-      totalPages: 100,
+      totalRepos: 100,
       pageSize: 10,
     });
   },
 
   componentDidMount: function() {
-    var reposUrl = '/repos?_limit=' + this.state.pageSize + '&_sort=name';
-    this.fetchJson('/repos?_limit=' + this.state.pageSize).then(function(repos) {
-      this.fetchJson('/filters').then(function(filters) {
+    var reposUrl, filtersUrl;
+
+    reposUrl = '/repos?_limit=' + this.state.pageSize + '&_sort=name';
+    filtersUrl = '/filters?_sort=namespace';
+
+    //TODO:
+    this.fetchJson(reposUrl).then(function(repos) {
+      this.fetchJson(filtersUrl).then(function(filters) {
         var pages;
         //Hardcoding this since I was unable to retrieve the
         //headers from returned by the response object
-        pages = this.setPages(this.state.totalPages);
+        pages = this.setPages(this.state.totalRepos);
 
         return this.setState({
           filteredRepos: repos,
