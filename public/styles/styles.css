@@ -4,22 +4,29 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
-/* line 10, scss/styles.scss */
-a {
-  color: #e81c4f;
-}
-
-/* line 14, scss/styles.scss */
+/* line 11, scss/styles.scss */
 h2 {
   color: #333;
 }
 
-/* line 18, scss/styles.scss */
+/* line 15, scss/styles.scss */
 .utils-fixed-width {
   max-width: 900px;
 }
 
-/* line 22, scss/styles.scss */
+/* line 19, scss/styles.scss */
 .utils-centered {
   margin: 0 auto;
+}
+
+/* line 23, scss/styles.scss */
+.paginator {
+  display: flex;
+  list-style: none;
+}
+
+/* line 28, scss/styles.scss */
+.paginator-item {
+  cursor: pointer;
+  padding: 10px;
 }

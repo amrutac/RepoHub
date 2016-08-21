@@ -7,9 +7,6 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
-a {
-  color: $contrastColor;
-}
 
 h2 {
   color: $headerColor;
@@ -21,4 +18,14 @@ h2 {
 
 .utils-centered {
   margin: 0 auto;
+}
+
+.paginator {
+  display: flex;
+  list-style: none;
+}
+
+.paginator-item {
+  cursor: pointer;
+  padding: 10px;
 }

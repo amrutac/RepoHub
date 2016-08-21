@@ -1,4 +1,5 @@
 var Repo = React.createClass({
+
   render: function() {
     return (
       <div className="repo">
@@ -10,6 +11,7 @@ var Repo = React.createClass({
 });
 
 var ReposList = React.createClass({
+
   render: function() {
     var list = [];
 
@@ -29,9 +31,9 @@ var FilterBy = React.createClass({
   },
 
   handleChange: function (e) {
-    var newSelectedOption = e.target.value
+    var newSelectedOption = e.target.value;
     this.setState({ selectedOption: newSelectedOption });
-    this.props.onFilterSelected(newSelectedOption);
+    this.props.onFilterSelection(newSelectedOption);
   },
 
   render: function() {
@@ -53,14 +55,33 @@ var FilterBy = React.createClass({
   }
 });
 
-var Pagination = React.createClass({
+var Paginator = React.createClass({
+
+  getInitialState: function() {
+    return {
+      selectedPage: 1
+    }
+  },
+
+  handleClick: function (e) {
+    var newSelectedPage = e.target.dataset.pageNumber;
+    this.setState({ selectedPage: newSelectedPage });
+    this.props.onPageSelection(newSelectedPage);
+  },
+
+  isActive:function(page){
+    return 'paginator-item' + ((page == this.state.selectedPage) ? ' active' : ' default');
+  },
 
   render: function() {
-    console.log(this.props.pages)
-    return (<ul>
-      {this.props.pages.map(function(page){
-        return <li key={page}><a>{page}</a></li>;
-      })}
+    return (<ul className="paginator">
+      {this.props.pages.map(function(page) {
+        return (
+          <li key={page} className={this.isActive(page)}>
+            <a onClick={this.handleClick} data-page-number={page}>{page}</a>
+          </li>
+        );
+      }.bind(this))}
     </ul>)
   }
 });
@@ -82,7 +103,13 @@ var FilterableReposList = React.createClass({
 
   setPages: function(reposLen) {
     var pages = [], total, i = 0;
+
+
     total = Math.floor(reposLen/this.state.pageSize);
+
+    if (reposLen % 10) {
+      total++;
+    }
     while (i++ < total) {
       pages.push(i);
     }
@@ -94,18 +121,40 @@ var FilterableReposList = React.createClass({
     return pages;
   },
 
-  setSelectedFilter: function(filterId) {
-    var url = '/repos?_limit=' + this.state.pageSize;
+  onFilterSelection: function(filterId) {
+    var url = '/repos?_limit=' + this.state.pageSize,
+      id = parseInt(filterId, 10);
 
-    if (filterId == 0) {
-      url = '/repos?_limit=' + this.state.pageSize;
+    this.setState({ filterApplied: id });
+    if (id) {
+      url = '/repos?owner.id=' + id;
     } else {
-      url = '/repos?owner.id=' + filterId + '&_limit=' + this.state.pageSize;
+      url = '/repos?_limit=' + this.state.pageSize;
     }
+
     this.fetchJson(url).then(function(repos) {
       var pages;
-      pages = filterId == 0 ? this.setPages(200) : this.setPages(repos.length);
-      this.setState({ filteredRepos: repos, pages: pages });
+      pages = id ? this.setPages(repos.length) :
+        this.setPages(this.state.totalPages);
+      this.setState({ filteredRepos: repos.slice(0, 10), pages: pages });
+    }.bind(this));
+  },
+
+  onPageSelection: function(page) {
+    var from, to,
+      url = '/repos?_limit=' + this.state.pageSize;
+
+    to = page * 10;
+    from = (to - 10);
+
+    if (this.state.filterApplied) {
+      url += '&owner.id=' + this.state.filterApplied +
+        '&_start=' + from;
+    } else {
+      url += '&_start=' + from;
+    }
+    this.fetchJson(url).then(function(repos) {
+      this.setState({ filteredRepos: repos });
     }.bind(this));
   },
 
@@ -114,21 +163,22 @@ var FilterableReposList = React.createClass({
       filteredRepos: [],
       filterByList: [],
       pages: [],
-      pageSize: 10
+      filterApplied: 0,
+      totalPages: 100,
+      pageSize: 10,
     });
   },
 
   componentDidMount: function() {
-
+    var reposUrl = '/repos?_limit=' + this.state.pageSize + '&_sort=name';
     this.fetchJson('/repos?_limit=' + this.state.pageSize).then(function(repos) {
       this.fetchJson('/filters').then(function(filters) {
         var pages;
         //Hardcoding this since I was unable to retrieve the
         //headers from returned by the response object
-        pages = this.setPages(200);
+        pages = this.setPages(this.state.totalPages);
 
         return this.setState({
-          originalReposSet: repos,
           filteredRepos: repos,
           filterByList: filters,
           pages: pages
@@ -145,9 +195,10 @@ var FilterableReposList = React.createClass({
         <div>
           <FilterBy
             filterByList={this.state.filterByList}
-            onFilterSelected={this.setSelectedFilter} />
+            onFilterSelection={this.onFilterSelection} />
           <ReposList repos={this.state.filteredRepos} />
-          <Pagination pages={this.state.pages} />
+          <Paginator pages={this.state.pages}
+            onPageSelection={this.onPageSelection} />
         </div>
       );
     } else {

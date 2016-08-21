@@ -1,2 +1,2 @@
-css_dir = "styles/"
-sass_dir = "styles/scss"
+css_dir = "public/styles/"
+sass_dir = "public/styles/scss"
