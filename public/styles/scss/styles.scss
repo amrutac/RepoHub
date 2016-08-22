@@ -19,11 +19,17 @@ h2 {
   color: $headerColor;
 }
 
+//Fixes the outline in firefox
+select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #000;
+}
+
 .wrapper {
   display: flex;
 }
 
-aside {
+.nav-wrapper {
   border-right: 1px solid $borderColor;
 }
 
@@ -35,7 +41,7 @@ aside {
 
 .nav__item {
   cursor: pointer;
-  padding: 15px 20px;
+  padding: 15px 30px;
   i {
     color: $secondaryFontColor;
     font-size: 18px;
