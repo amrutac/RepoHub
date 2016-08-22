@@ -5,7 +5,7 @@ $btnBackground: #e5e5e5;
 $contrastColor: #e81c4f;
 $headerColor: #333;
 $primaryFontColor: #555;
-$secondaryFontColor: #bbb;
+$secondaryFontColor: #a8a8a8;
 $typeColor: #ffa500;
 $typeFontColor: #ffae19;
 $fontFamily: 'Open Sans', sans-serif;
@@ -34,6 +34,7 @@ aside {
 }
 
 .nav__item {
+  cursor: pointer;
   padding: 15px 20px;
   i {
     color: $secondaryFontColor;
@@ -49,12 +50,19 @@ aside {
   }
 }
 
+.filterby-wrapper {
+  align-items: center;
+  color: $secondaryFontColor;
+  display: flex;
+}
+
 .filterby {
   background: url("../img/select.png") no-repeat 90% 50%;
   border-radius: 3px;
   border: 1px solid #a8a8a8;
   margin: 15px 0;
   overflow: hidden;
+  margin-left: 10px;
   width: 180px;
 }
 
@@ -66,6 +74,7 @@ aside {
   background: transparent;
   border: none;
   box-shadow: none;
+  color: $secondaryFontColor;
   font-family: $fontFamily;
   font-size: 0.9em;
   line-height: 20px;
@@ -93,6 +102,7 @@ aside {
 
 .repos-list-wrapper {
   padding: 0 40px;
+  min-width: 1200px;
 }
 
 .repos-list-header {

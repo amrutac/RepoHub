@@ -56,14 +56,17 @@ var FilterBy = React.createClass({
       );
     });
     return (
-      <div className="filterby">
-        <select
-          className="filterby__select"
-          value={this.state.selectedOption}
-          onChange={this.handleChange}>
-          <option className="filterby__option" value="0">All</option>
-          {options}
-        </select>
+      <div className="filterby-wrapper">
+        <div>Filter By</div>
+        <div className="filterby">
+          <select
+            className="filterby__select"
+            value={this.state.selectedOption}
+            onChange={this.handleChange}>
+            <option className="filterby__option" value="0">All</option>
+            {options}
+          </select>
+        </div>
       </div>
     );
   }
@@ -91,7 +94,6 @@ var Paginator = React.createClass({
     totalPages = this.props.pages.length - 2;
 
     if (newValue === '<') {
-      console.log(newValue, oldValue)
       newValue = oldValue !== 1 ? oldValue - 1 : 1;
     } else if (newValue === '>') {
       newValue = oldValue < totalPages ?
@@ -198,6 +200,7 @@ var FilterableReposList = React.createClass({
       filteredRepos: [],
       filterByList: [],
       pages: [],
+      activePage: 1,
       filterApplied: 0,
       totalRepos: 100,
       pageSize: 10,
@@ -230,7 +233,7 @@ var FilterableReposList = React.createClass({
   },
 
   render: function() {
-    if (this.state.filteredRepos) {
+    if (this.state.filteredRepos && this.state.filterByList) {
       return (
         <div className="repos-list-wrapper">
           <div className="repos-list-header">

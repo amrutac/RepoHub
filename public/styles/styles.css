@@ -28,35 +28,44 @@ aside {
 
 /* line 36, scss/styles.scss */
 .nav__item {
+  cursor: pointer;
   padding: 15px 20px;
 }
-/* line 38, scss/styles.scss */
+/* line 39, scss/styles.scss */
 .nav__item i {
-  color: #bbb;
+  color: #a8a8a8;
   font-size: 18px;
 }
 
-/* line 44, scss/styles.scss */
+/* line 45, scss/styles.scss */
 .nav__item--active {
   border-left: 3px solid #0EBFE9;
 }
-/* line 46, scss/styles.scss */
+/* line 47, scss/styles.scss */
 .nav__item--active i {
   color: #0EBFE9;
   font-size: 18px;
 }
 
-/* line 52, scss/styles.scss */
+/* line 53, scss/styles.scss */
+.filterby-wrapper {
+  align-items: center;
+  color: #a8a8a8;
+  display: flex;
+}
+
+/* line 59, scss/styles.scss */
 .filterby {
   background: url("../img/select.png") no-repeat 90% 50%;
   border-radius: 3px;
   border: 1px solid #a8a8a8;
   margin: 15px 0;
   overflow: hidden;
+  margin-left: 10px;
   width: 180px;
 }
 
-/* line 61, scss/styles.scss */
+/* line 69, scss/styles.scss */
 .filterby__select {
   -moz-appearance: none;
   /* Firefox */
@@ -67,6 +76,7 @@ aside {
   background: transparent;
   border: none;
   box-shadow: none;
+  color: #a8a8a8;
   font-family: "Open Sans", sans-serif;
   font-size: 0.9em;
   line-height: 20px;
@@ -74,12 +84,12 @@ aside {
   width: 130%;
 }
 
-/* line 76, scss/styles.scss */
+/* line 85, scss/styles.scss */
 .filterby__select:focus {
   outline: none;
 }
 
-/* line 80, scss/styles.scss */
+/* line 89, scss/styles.scss */
 .button {
   background-color: #0EBFE9;
   border-radius: 2px;
@@ -94,51 +104,52 @@ aside {
   padding: 10px 15px;
 }
 
-/* line 94, scss/styles.scss */
+/* line 103, scss/styles.scss */
 .repos-list-wrapper {
   padding: 0 40px;
+  min-width: 1200px;
 }
 
-/* line 98, scss/styles.scss */
+/* line 108, scss/styles.scss */
 .repos-list-header {
   align-items: center;
   display: flex;
   justify-content: space-between;
 }
 
-/* line 104, scss/styles.scss */
+/* line 114, scss/styles.scss */
 .repo-wrapper {
   border-bottom: 1px solid #f1f1f1;
   padding: 10px 0;
 }
 
-/* line 109, scss/styles.scss */
+/* line 119, scss/styles.scss */
 .repo {
   width: 50%;
 }
 
-/* line 113, scss/styles.scss */
+/* line 123, scss/styles.scss */
 .repo__title {
   padding-bottom: 10px;
 }
 
-/* line 117, scss/styles.scss */
+/* line 127, scss/styles.scss */
 .repo__login {
   padding-right: 5px;
 }
 
-/* line 121, scss/styles.scss */
+/* line 131, scss/styles.scss */
 .repo__name {
   padding-left: 5px;
 }
 
-/* line 125, scss/styles.scss */
+/* line 135, scss/styles.scss */
 .repo__description {
-  color: #bbb;
+  color: #a8a8a8;
   font-size: 14px;
 }
 
-/* line 130, scss/styles.scss */
+/* line 140, scss/styles.scss */
 .repo__type {
   border: 1px solid #ffa500;
   font-size: 12px;
@@ -147,12 +158,12 @@ aside {
   text-transform: lowercase;
 }
 
-/* line 138, scss/styles.scss */
+/* line 148, scss/styles.scss */
 .repo__type--private {
   color: #ffae19;
 }
 
-/* line 142, scss/styles.scss */
+/* line 152, scss/styles.scss */
 .paginator {
   display: flex;
   justify-content: center;
@@ -160,7 +171,7 @@ aside {
   margin-top: 40px;
 }
 
-/* line 149, scss/styles.scss */
+/* line 159, scss/styles.scss */
 .paginator__item {
   cursor: pointer;
   font-size: 12px;
@@ -168,14 +179,14 @@ aside {
   padding: 5px 11px;
 }
 
-/* line 156, scss/styles.scss */
+/* line 166, scss/styles.scss */
 .paginator__item--default {
   background-color: #e5e5e5;
   border-radius: 3px;
   border: 1px solid #e5e5e5;
 }
 
-/* line 162, scss/styles.scss */
+/* line 172, scss/styles.scss */
 .paginator__item--active {
   background-color: #0EBFE9;
   border-radius: 3px;
