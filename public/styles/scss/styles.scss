@@ -1,81 +1,167 @@
+$borderColor: #f1f1f1;
+$btnActiveBackground: #0EBFE9;
+$btnActiveFont: #fff;
+$btnBackground: #e5e5e5;
+$contrastColor: #e81c4f;
+$headerColor: #333;
 $primaryFontColor: #555;
 $secondaryFontColor: #bbb;
-$headerColor: #333;
-$contrastColor: #e81c4f;
-$borderColor: #f1f1f1;
 $typeColor: #ffa500;
-$btnBackground: #e5e5e5;
-$btnActiveBackground: #0EBFE9;
+$typeFontColor: #ffae19;
+$fontFamily: 'Open Sans', sans-serif;
 
 body {
   color: $primaryFontColor;
-  font-family: 'Open Sans', sans-serif;
+  font-family: $fontFamily;
 }
 
 h2 {
   color: $headerColor;
 }
 
-.utils-repo-width {
-  width: 40%;
+.wrapper {
+  display: flex;
+}
+
+aside {
+  border-right: 1px solid $borderColor;
+}
+
+.nav__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav__item {
+  padding: 15px 20px;
+  i {
+    color: $secondaryFontColor;
+    font-size: 18px;
+  }
+}
+
+.nav__item--active {
+  border-left: 3px solid $btnActiveBackground;
+  i {
+    color: $btnActiveBackground;
+    font-size: 18px;
+  }
+}
+
+.filterby {
+  background: url("../img/select.png") no-repeat 90% 50%;
+  border-radius: 3px;
+  border: 1px solid #a8a8a8;
+  margin: 15px 0;
+  overflow: hidden;
+  width: 180px;
+}
+
+.filterby__select {
+  -moz-appearance:none; /* Firefox */
+  -webkit-appearance:none; /* Safari and Chrome */
+  appearance:none;
+  background-image: none;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  font-family: $fontFamily;
+  font-size: 0.9em;
+  line-height: 20px;
+  padding: 5px 8px;
+  width: 130%;
+}
+
+.filterby__select:focus {
+  outline: none;
+}
+
+.button {
+  background-color: $btnActiveBackground;
+  border-radius: 2px;
+  border: 2px solid $btnActiveBackground;
+  color: $btnActiveFont;
+  cursor: pointer;
+  font-family: $fontFamily;
+  font-size: 14px;
+  font-weight: bold;
+  outline: none;
+  overflow: hidden;
+  padding: 10px 15px;
 }
 
 .repos-list-wrapper {
   padding: 0 40px;
 }
 
-.repo {
+.repos-list-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.repo-wrapper {
   border-bottom: 1px solid $borderColor;
   padding: 10px 0;
 }
 
-.repo-title {
+.repo {
+  width: 50%;
+}
+
+.repo__title {
   padding-bottom: 10px;
 }
 
-.repo-login {
+.repo__login {
   padding-right: 5px;
 }
 
-.repo-name {
+.repo__name {
   padding-left: 5px;
 }
 
-.repo-description {
+.repo__description {
   color: $secondaryFontColor;
   font-size: 14px;
 }
 
-.repo-type {
-  color: #ffae19;
-  font-size: 12px;
-  text-transform: lowercase;
+.repo__type {
   border: 1px solid $typeColor;
-  padding: 2px 7px;
+  font-size: 12px;
   margin-left: 20px;
+  padding: 2px 7px;
+  text-transform: lowercase;
+}
+
+.repo__type--private {
+  color: $typeFontColor;
 }
 
 .paginator {
   display: flex;
+  justify-content: center;
   list-style: none;
+  margin-top: 40px;
 }
 
-.paginator-item {
+.paginator__item {
   cursor: pointer;
-  padding: 5px 11px;
+  font-size: 12px;
   margin: 2px;
-
+  padding: 5px 11px;
 }
 
-.default {
-  border: 1px solid $btnBackground;
+.paginator__item--default {
   background-color: $btnBackground;
   border-radius: 3px;
+  border: 1px solid $btnBackground;
 }
 
-.active {
-  border: 1px solid $btnActiveBackground;
+.paginator__item--active {
   background-color: $btnActiveBackground;
   border-radius: 3px;
-  color: #fff;
+  border: 1px solid $btnActiveBackground;
+  color: $btnActiveFont;
 }

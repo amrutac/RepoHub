@@ -2,15 +2,19 @@ var Repo = React.createClass({
 
   render: function() {
     return (
-      <div className="repo">
-        <div className="repo-title utils-repo-width">
-          <span className="repo-login">{this.props.repo.owner.login}</span>
-          <span>&#47;</span>
-          <span className="repo-name"><strong>{this.props.repo.name}</strong></span>
-          {this.props.repo.private ? <span className="repo-type">Private</span> :
-            <span className="repo-type">Public</span> }
+      <div className="repo-wrapper">
+        <div className="repo">
+          <div className="repo__title">
+            <span className="repo__login">{this.props.repo.owner.login}</span>
+            <span>&#47;</span>
+            <span className="repo__name"><strong>{this.props.repo.name}</strong></span>
+            {this.props.repo.private ? <span className="repo__type repo-type--private">Private</span> :
+              '' }
+          </div>
+          <div className="repo__description">
+            {this.props.repo.description}
+          </div>
         </div>
-        <div className="repo-description utils-repo-width">{this.props.repo.description}</div>
       </div>);
   }
 });
@@ -52,11 +56,22 @@ var FilterBy = React.createClass({
       );
     });
     return (
-      <select value={this.state.selectedOption} onChange={this.handleChange}>
-        <option value="0">All</option>
-        {options}
-      </select>
+      <div className="filterby">
+        <select
+          className="filterby__select"
+          value={this.state.selectedOption}
+          onChange={this.handleChange}>
+          <option className="filterby__option" value="0">All</option>
+          {options}
+        </select>
+      </div>
     );
+  }
+});
+
+var Button = React.createClass({
+  render: function() {
+    return (<button className="button">New repository</button>)
   }
 });
 
@@ -76,7 +91,8 @@ var Paginator = React.createClass({
     totalPages = this.props.pages.length - 2;
 
     if (newValue === '<') {
-      newValue = oldValue === 1 ? oldValue - 1 : 1;
+      console.log(newValue, oldValue)
+      newValue = oldValue !== 1 ? oldValue - 1 : 1;
     } else if (newValue === '>') {
       newValue = oldValue < totalPages ?
         oldValue + 1 : totalPages;
@@ -86,14 +102,18 @@ var Paginator = React.createClass({
   },
 
   isActive:function(page){
-    return 'paginator-item' + ((page == this.state.selectedPage) ? ' active' : ' default');
+    return 'paginator__item' + ((page == this.state.selectedPage) ?
+      ' paginator__item--active' :
+      ' paginator__item--default');
   },
 
   render: function() {
     return (<ul className="paginator">
       {this.props.pages.map(function(page) {
         return (
-          <li key={page} className={this.isActive(page)} onClick={this.handleClick} data-page-number={page}>
+          <li key={page} className={this.isActive(page)}
+            onClick={this.handleClick}
+            data-page-number={page}>
             {page}
           </li>
         );
@@ -137,14 +157,14 @@ var FilterableReposList = React.createClass({
   },
 
   onFilterSelection: function(filterId) {
-    var url = '/repos?_sort=name&_limit=' + this.state.pageSize,
+    var url = '/repos?_sort=name',
       id = parseInt(filterId, 10);
 
     this.setState({ filterApplied: id });
     if (id) {
-      url = '/repos?owner.id=' + id;
+      url += '&owner.id=' + id;
     } else {
-      url = '/repos?_limit=' + this.state.pageSize;
+      url += '&_limit=' + this.state.pageSize;
     }
 
     this.fetchJson(url).then(function(repos) {
@@ -190,7 +210,7 @@ var FilterableReposList = React.createClass({
     reposUrl = '/repos?_limit=' + this.state.pageSize + '&_sort=name';
     filtersUrl = '/filters?_sort=namespace';
 
-    //TODO:
+    //TODO: Promises.all
     this.fetchJson(reposUrl).then(function(repos) {
       this.fetchJson(filtersUrl).then(function(filters) {
         var pages;
@@ -213,9 +233,12 @@ var FilterableReposList = React.createClass({
     if (this.state.filteredRepos) {
       return (
         <div className="repos-list-wrapper">
-          <FilterBy
-            filterByList={this.state.filterByList}
-            onFilterSelection={this.onFilterSelection} />
+          <div className="repos-list-header">
+            <FilterBy
+              filterByList={this.state.filterByList}
+              onFilterSelection={this.onFilterSelection} />
+            <Button />
+          </div>
           <ReposList repos={this.state.filteredRepos} />
           <Paginator pages={this.state.pages}
             onPageSelection={this.onPageSelection} />

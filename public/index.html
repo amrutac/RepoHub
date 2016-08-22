@@ -14,16 +14,41 @@
     <script src="https://npmcdn.com/remarkable@1.6.2/dist/remarkable.min.js"></script>
   </head>
   <body>
-    <aside>
-      <nav></nav>
-    </aside>
+    <div class="wrapper">
+      <aside>
+        <nav class="nav">
+          <ul class="nav__list">
+            <li class="nav__item">
+              <i class="fa fa-tachometer" aria-hidden="true"></i>
+            </li>
+            <li class="nav__item">
+              <i class="fa fa-building-o" aria-hidden="true"></i>
+            </li>
+            <li class="nav__item nav__item--active">
+              <i class="fa fa-server" aria-hidden="true"></i>
+            </li>
+            <li class="nav__item">
+              <i class="fa fa-user" aria-hidden="true"></i>
+            </li>
+            <li class="nav__item">
+              <i class="fa fa-building-o" aria-hidden="true"></i>
+            </li>
+            <li class="nav__item">
+              <i class="fa fa-cog" aria-hidden="true"></i>
+            </li>
+            <li class="nav__item">
+              <i class="fa fa-align-left" aria-hidden="true"></i>
+            </li>
+          </ul>
+        </nav>
+      </aside>
 
-    <section class="utils-centered utils-fixed-width">
-      <div id="container">
-      <!-- This element's contents will be replaced with your component. -->
-      </div>
-    </section>
-
+      <section>
+        <div id="container">
+        <!-- This element's contents will be replaced with your component. -->
+        </div>
+      </section>
+    </div>
     <!-- scripts -->
     <script type="text/babel" src="scripts/main.jsx"></script>
     <script src="scripts/utils.js"></script>
