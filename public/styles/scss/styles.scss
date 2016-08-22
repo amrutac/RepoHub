@@ -175,3 +175,16 @@ aside {
   border: 1px solid $btnActiveBackground;
   color: $btnActiveFont;
 }
+
+@media screen and (max-width: 580px) {
+  .repos-list-wrapper {
+    min-width: 580px;
+  }
+
+  .paginator {
+    flex-direction: column;
+    width: 35px;
+    flex-wrap: wrap;
+  }
+
+}

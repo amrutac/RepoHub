@@ -193,3 +193,17 @@ aside {
   border: 1px solid #0EBFE9;
   color: #fff;
 }
+
+@media screen and (max-width: 580px) {
+  /* line 180, scss/styles.scss */
+  .repos-list-wrapper {
+    min-width: 580px;
+  }
+
+  /* line 184, scss/styles.scss */
+  .paginator {
+    flex-direction: column;
+    width: 35px;
+    flex-wrap: wrap;
+  }
+}
