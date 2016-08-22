@@ -9,11 +9,11 @@ Font awesome (http://fontawesome.io/icons/)
 Used for icons in the project.
 
 ## React components
- |- FilterableRepoList
-  |- FilterBy
-  |- RepoList
-      |- Repo
-  |- Paginator
+FilterableRepoList
+  FilterBy
+    RepoList
+      Repo
+  Paginator
 
 ## Run the app
 Download the repo and run the json server
